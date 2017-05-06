@@ -50,6 +50,9 @@ uintptr_t processFn(struct fnargs* args, char* parg) {
 	case glfnBindBuffer:
 		glBindBuffer((GLenum)args->a0, (GLuint)args->a1);
 		break;
+	case glfnBindVertexArray:
+		glBindVertexArray((GLuint)args->a1);
+		break;
 	case glfnBindFramebuffer:
 		glBindFramebuffer((GLenum)args->a0, (GLint)args->a1);
 		break;
@@ -143,6 +146,9 @@ uintptr_t processFn(struct fnargs* args, char* parg) {
 	case glfnDeleteTexture:
 		glDeleteTextures(1, (const GLuint*)(&args->a0));
 		break;
+	case glfnDeleteVertexArray:
+		glDeleteVertexArrays(1, (const GLuint*)(&args->a0));
+		break;
 	case glfnDepthFunc:
 		glDepthFunc((GLenum)args->a0);
 		break;
@@ -199,6 +205,9 @@ uintptr_t processFn(struct fnargs* args, char* parg) {
 		break;
 	case glfnGenTexture:
 		glGenTextures(1, (GLuint*)&ret);
+		break;
+	case glfnGenVertexArrays:
+		glGenVertexArrays(1, (GLuint*)&ret);
 		break;
 	case glfnGenerateMipmap:
 		glGenerateMipmap((GLenum)args->a0);

@@ -59,6 +59,10 @@ type Uniform struct {
 	Value int32
 }
 
+type VertexArray struct {
+	Value uint32
+}
+
 func (v Attrib) c() uintptr { return uintptr(v.Value) }
 func (v Enum) c() uintptr   { return uintptr(v) }
 func (v Program) c() uintptr {
@@ -75,6 +79,7 @@ func (v Framebuffer) c() uintptr  { return uintptr(v.Value) }
 func (v Renderbuffer) c() uintptr { return uintptr(v.Value) }
 func (v Texture) c() uintptr      { return uintptr(v.Value) }
 func (v Uniform) c() uintptr      { return uintptr(v.Value) }
+func (v VertexArray) c() uintptr  { return uintptr(v.Value) }
 
 func (v Attrib) String() string       { return fmt.Sprintf("Attrib(%d)", v.Value) }
 func (v Program) String() string      { return fmt.Sprintf("Program(%d)", v.Value) }

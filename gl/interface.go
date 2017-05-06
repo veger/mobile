@@ -831,10 +831,25 @@ type Context interface {
 type Context3 interface {
 	Context
 
+	// BindTexture binds a vertex array object.
+	//
+	// http://www.khronos.org/opengles/sdk/docs/man3/html/glBindVertexArray.xhtml
+	BindVertexArray(v VertexArray)
+
 	// BlitFramebuffer copies a block of pixels between framebuffers.
 	//
 	// https://www.khronos.org/opengles/sdk/docs/man3/html/glBlitFramebuffer.xhtml
 	BlitFramebuffer(srcX0, srcY0, srcX1, srcY1, dstX0, dstY0, dstX1, dstY1 int, mask uint, filter Enum)
+
+	// CreateVertexArray creates a vertex array object.
+	//
+	// http://www.khronos.org/opengles/sdk/docs/man3/html/glGenVertexArrays.xhtml
+	CreateVertexArray() VertexArray
+
+	// DeleteBuffer deletes the given buffer object.
+	//
+	// http://www.khronos.org/opengles/sdk/docs/man3/html/glDeleteVertexArrays.xhtml
+	DeleteVertexArray(v VertexArray)
 }
 
 // Worker is used by display driver code to execute OpenGL calls.

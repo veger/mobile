@@ -60,6 +60,15 @@ func (ctx *context) BindBuffer(target Enum, b Buffer) {
 	})
 }
 
+func (ctx context3) BindVertexArray(b VertexArray) {
+	ctx.enqueue(call{
+		args: fnargs{
+			fn: glfnBindVertexArray,
+			a1: b.c(),
+		},
+	})
+}
+
 func (ctx *context) BindFramebuffer(target Enum, fb Framebuffer) {
 	ctx.enqueue(call{
 		args: fnargs{
@@ -380,6 +389,15 @@ func (ctx *context) CreateTexture() Texture {
 	}))}
 }
 
+func (ctx context3) CreateVertexArray() VertexArray {
+	return VertexArray{Value: uint32(ctx.enqueue(call{
+		args: fnargs{
+			fn: glfnGenVertexArrays,
+		},
+		blocking: true,
+	}))}
+}
+
 func (ctx *context) CullFace(mode Enum) {
 	ctx.enqueue(call{
 		args: fnargs{
@@ -439,6 +457,15 @@ func (ctx *context) DeleteTexture(v Texture) {
 		args: fnargs{
 			fn: glfnDeleteTexture,
 			a0: v.c(),
+		},
+	})
+}
+
+func (ctx context3) DeleteVertexArray(v VertexArray) {
+	ctx.enqueue(call{
+		args: fnargs{
+			fn: glfnDeleteVertexArray,
+			a1: v.c(),
 		},
 	})
 }
