@@ -1297,6 +1297,19 @@ func (ctx *context) BindBuffer(target Enum, b Buffer) {
 		blocking: true})
 }
 
+func (ctx context3) BindVertexArray(b VertexArray) {
+	defer func() {
+		errstr := ctx.errDrain()
+		log.Printf("gl.BindVertexArray(%v) %v", b, errstr)
+	}()
+	ctx.enqueueDebug(call{
+		args: fnargs{
+			fn: glfnBindVertexArray,
+			a1: b.c(),
+		},
+		blocking: true})
+}
+
 func (ctx *context) BindFramebuffer(target Enum, fb Framebuffer) {
 	defer func() {
 		errstr := ctx.errDrain()
@@ -1729,6 +1742,19 @@ func (ctx *context) CreateTexture() (r0 Texture) {
 	}))}
 }
 
+func (ctx context3) CreateVertexArray() (r0 VertexArray) {
+	defer func() {
+		errstr := ctx.errDrain()
+		log.Printf("gl.CreateVertexArray() %v%v", r0, errstr)
+	}()
+	return VertexArray{Value: uint32(ctx.enqueue(call{
+		args: fnargs{
+			fn: glfnGenVertexArrays,
+		},
+		blocking: true,
+	}))}
+}
+
 func (ctx *context) CullFace(mode Enum) {
 	defer func() {
 		errstr := ctx.errDrain()
@@ -1816,6 +1842,19 @@ func (ctx *context) DeleteTexture(v Texture) {
 		args: fnargs{
 			fn: glfnDeleteTexture,
 			a0: v.c(),
+		},
+		blocking: true})
+}
+
+func (ctx context3) DeleteVertexArray(v VertexArray) {
+	defer func() {
+		errstr := ctx.errDrain()
+		log.Printf("gl.DeleteVertexArray(%v) %v", v, errstr)
+	}()
+	ctx.enqueueDebug(call{
+		args: fnargs{
+			fn: glfnDeleteVertexArray,
+			a1: v.c(),
 		},
 		blocking: true})
 }

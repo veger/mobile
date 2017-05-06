@@ -49,6 +49,10 @@ type Uniform struct {
 	name  string
 }
 
+type VertexArray struct {
+	Value uint32
+}
+
 func (v Attrib) c() uintptr { return uintptr(v.Value) }
 func (v Enum) c() uintptr   { return uintptr(v) }
 func (v Program) c() uintptr {
