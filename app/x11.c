@@ -143,13 +143,13 @@ processEvents(void) {
 		XNextEvent(x_dpy, &ev);
 		switch (ev.type) {
 		case ButtonPress:
-			onTouchBegin((float)ev.xbutton.x, (float)ev.xbutton.y);
+			onMousePress((float)ev.xbutton.x, (float)ev.xbutton.y, (unsigned int) ev.xbutton.button, (unsigned int) ev.xbutton.state);
 			break;
 		case ButtonRelease:
-			onTouchEnd((float)ev.xbutton.x, (float)ev.xbutton.y);
+			onMouseRelease((float)ev.xbutton.x, (float)ev.xbutton.y, (unsigned int) ev.xbutton.button, (unsigned int) ev.xbutton.state);
 			break;
 		case MotionNotify:
-			onTouchMove((float)ev.xmotion.x, (float)ev.xmotion.y);
+			onMouseMove((float)ev.xmotion.x, (float)ev.xmotion.y, (unsigned int) ev.xbutton.state);
 			break;
 		case ConfigureNotify:
 			onResize(ev.xconfigure.width, ev.xconfigure.height);

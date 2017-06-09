@@ -24,10 +24,11 @@ import (
 	"runtime"
 	"time"
 
+	"golang.org/x/mobile/event/key"
 	"golang.org/x/mobile/event/lifecycle"
+	"golang.org/x/mobile/event/mouse"
 	"golang.org/x/mobile/event/paint"
 	"golang.org/x/mobile/event/size"
-	"golang.org/x/mobile/event/touch"
 	"golang.org/x/mobile/geom"
 )
 
@@ -91,23 +92,63 @@ func onResize(w, h int) {
 	}
 }
 
-func sendTouch(t touch.Type, x, y float32) {
-	theApp.eventsIn <- touch.Event{
-		X:        x,
-		Y:        y,
-		Sequence: 0, // TODO: button??
-		Type:     t,
+func sendMouse(d mouse.Direction, x, y float32, button uint, state uint) {
+	var b mouse.Button
+	switch button {
+	case 1:
+		b = mouse.ButtonLeft
+	case 2:
+		b = mouse.ButtonMiddle
+	case 3:
+		b = mouse.ButtonRight
+	case 4:
+		b = mouse.ButtonWheelUp
+	case 5:
+		b = mouse.ButtonWheelDown
+	case 6:
+		b = mouse.ButtonWheelLeft
+	case 7:
+		b = mouse.ButtonWheelRight
+	default:
+		// Unknown/unsupported button
+		b = mouse.ButtonNone
+	}
+
+	var m key.Modifiers
+	if state&(1<<0) != 0 {
+		m += key.ModShift
+	}
+	if state&(1<<2) != 0 {
+		m += key.ModControl
+	}
+	if state&(1<<3) != 0 {
+		m += key.ModAlt
+	}
+	if state&(1<<6) != 0 {
+		m += key.ModMeta
+	}
+
+	theApp.eventsIn <- mouse.Event{
+		X:         x,
+		Y:         y,
+		Button:    b,
+		Direction: d,
+		Modifiers: m,
 	}
 }
 
-//export onTouchBegin
-func onTouchBegin(x, y float32) { sendTouch(touch.TypeBegin, x, y) }
+//export onMousePress
+func onMousePress(x, y float32, button uint, state uint) {
+	sendMouse(mouse.DirPress, x, y, button, state)
+}
 
-//export onTouchMove
-func onTouchMove(x, y float32) { sendTouch(touch.TypeMove, x, y) }
+//export onMouseMove
+func onMouseMove(x, y float32, state uint) { sendMouse(mouse.DirNone, x, y, 0, state) }
 
-//export onTouchEnd
-func onTouchEnd(x, y float32) { sendTouch(touch.TypeEnd, x, y) }
+//export onMouseRelease
+func onMouseRelease(x, y float32, button uint, state uint) {
+	sendMouse(mouse.DirRelease, x, y, button, state)
+}
 
 var stopped bool
 
